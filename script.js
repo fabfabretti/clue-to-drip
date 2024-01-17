@@ -28,6 +28,13 @@ function convertFile() {
     }
 }
 
+
+/**
+ * Converts Clue's JSON structure to a list of objects.
+ *
+ * @param   dataString a stringified JSON file in Clue's format.
+ * @returns a list of objects with all the Clue data in a format closer to the one drip. uses.
+ */
 function clueToObjects(dataString) {
     // drip. header columns and array of entries
     let dripEntries = []
@@ -182,6 +189,8 @@ function clueToObjects(dataString) {
                                 break;
                             case "discharge":
                                 entry.value.forEach(item => {
+                                    //TODO: EXCLUSION CRITERION
+                                    dripEntry.mucusExclude = false
                                     switch(item.option){
                                         case "none": //none,sticky,creamy,egg_white,atypical
                                             dripEntry.mucusTexture = 0
@@ -193,7 +202,6 @@ function clueToObjects(dataString) {
                                         case "egg_white":
                                             dripEntry.mucusTexture = 2
 
-                                            //TODO: EXCLUSION CRITERION
                                     }
                                 })
                                 break;
@@ -222,7 +230,34 @@ function clueToObjects(dataString) {
                                 })
                                 break;
 
-                            
+                            //this is for my own tags. Anyone is more than welcome to generalize it!
+                            case "tags":
+                                entry.value.forEach(item => {
+                                    switch(item.option){
+                                        default:
+                                            dripEntry.noteValue ? dripEntry.noteValue += ("["+entry.type+": " + item.option+"]") : dripEntry.noteValue = ("["+entry.type+": " + item.option+"]")        
+                                            break;
+                                        case "high libido":
+                                        case "!":
+                                            dripEntry.desireValue = 2;
+                                            break;
+                                        case "back cracking":
+                                        case "BACK PAIN":
+                                            dripEntry.painBackache = true;
+                                            break;
+                                        case "vulva pain?!":
+                                        case "bedridden":
+                                        case "flu":
+                                        case "pee":
+                                            dripEntry.painOther = true;
+                                            dripEntry.painNote = item.option;
+                                            break;
+                                        case "sleeeep":
+                                            dripEntry.moodFatigue = true;
+                                            break;
+                                        }
+                                })
+                            break;
                             
                         }
                     }
@@ -239,67 +274,16 @@ function clueToObjects(dataString) {
         return dripEntries
 }
 
+/**
+ * Takes the entries as an array of objects, and returns a string with everything put down in the correct order and CSV format.
+ *
+ * @param   data an array of objects as per created by the clueToObjects function.
+ * @returns a string with the resulting CSV content, ready to be written on file.
+ */
 function objectsToCSV(data){
 
     var csvContent = "date,temperature.value,temperature.exclude,temperature.time,temperature.note,bleeding.value,bleeding.exclude,mucus.feeling,mucus.texture,mucus.value,mucus.exclude,cervix.opening,cervix.firmness,cervix.position,cervix.exclude,note.value,desire.value,sex.solo,sex.partner,sex.condom,sex.pill,sex.iud,sex.patch,sex.ring,sex.implant,sex.diaphragm,sex.none,sex.other,sex.note,pain.cramps,pain.ovulationPain,pain.headache,pain.backache,pain.nausea,pain.tenderBreasts,pain.migraine,pain.other,pain.note,mood.happy,mood.sad,mood.stressed,mood.balanced,mood.fine,mood.anxious,mood.energetic,mood.fatigue,mood.angry,mood.other,mood.note"
-
-
-    //insert a test with all the entry to check they're all correct
-    const data_complex = 
-        {
-            date:"2024-01-16",
-            temperatureValue: 35.75, // : float with 4.2f precision
-            temperatureExclude: false, // : boolean
-            temperatureTime: "10:10",// : time value with hh:mm format
-            temperatureNote: "note",//freeform text
-            bleedingValue:0,//int in [0,3]
-            bleedingExclude:false,//boolean
-            mucusFeeling: 0,//int in [0,3]
-            mucusTexture: 0,//int in [0,2]
-            mucusValue: 0,//int in [0,4]
-            mucusExclude: false,//boolean
-            cervixOpening: 0,//int in [0,2]
-            cervixFirmness: 0,//int in [0,1]
-            cervixPosition: 0,//int in [0,2]
-            cervixExclude: false,//boolean
-            noteValue: "note value", // freeform text
-            desireValue: 0,// int in [0,2]
-            sexSolo: false,//boolean
-            sexPartner:true,//boolean
-            sexCondom: false,//boolean
-            sexPill: false,//boolean
-            sexIud: false,//boolean
-            sexPatch: false,//boolean
-            sexRing: false,//boolean
-            sexImplant: false,//boolean
-            sexDiaphragm: false,//boolean
-            sexNone: false,//boolean
-            sexOther: false,//boolean
-            sexNote: "sex note",//freeform text
-            painCramps: false,//boolean
-            painOvulationPain: false,//boolean
-            painHeadache: false,//boolean
-            painBackache: false,//boolean
-            painNausea: false,//boolean
-            painTenderBreasts: false,//boolean
-            painMigraine: false,//boolean
-            painOther: false,//boolean
-            painNote: "pain note",//freeform text
-            moodHappy: false,//boolean
-            moodSad: false,//boolean
-            moodStressed: false,//boolean
-            moodBalanced: false,//boolean
-            moodFine: false,//boolean
-            moodAnxious: false,//boolean
-            moodEnergetic: false,//boolean
-            moodFatigue: false,//boolean
-            moodAngry: false,//boolean
-            moodOther: false,//boolean
-            moodNote: "mood note",//freeform text
-          }
-
-
-    data.forEach(entry => {
+        data.forEach(entry => {
         csvContent+=("\n")
         csvContent+=(entry.date)+","
 
@@ -370,21 +354,7 @@ function objectsToCSV(data){
     
     })
 
- 
-
-
-    const dataUri = "data:text/csv;charset=utf8,"+ encodeURIComponent(csvContent)
-
-    const link = document.createElement("a")
-    link.setAttribute("href",dataUri)
-    link.setAttribute("download","tf.csv")
-    document.body.appendChild(link)
-
-    document.getElementById('downloadButton').addEventListener('click', () => {
-        link.click();
-    });
-
-    document.getElementById("output").innerHTML=csvContent
+    return csvContent
 
 }
 
@@ -405,6 +375,7 @@ async function fetchTestData(convertFunction,writeFunction){
             data = convertFunction(data)
             console.log("Clue file loaded correctly.")
             data = writeFunction(data)
+            return data
         }
 
     }catch(error){
@@ -413,7 +384,22 @@ async function fetchTestData(convertFunction,writeFunction){
     }
 }
 
-var data = await fetchTestData(clueToObjects,objectsToCSV)
+var csvContent = await fetchTestData(clueToObjects,objectsToCSV)
+
+
+const dataUri = "data:text/csv;charset=utf8,"+ encodeURIComponent(csvContent)
+
+const link = document.createElement("a")
+link.setAttribute("href",dataUri)
+link.setAttribute("download","tf.csv")
+document.body.appendChild(link)
+
+document.getElementById('downloadButton').addEventListener('click', () => {
+    link.click();
+});
+
+document.getElementById("output").innerHTML=csvContent
+
 
 function getAllValues(data){
     
