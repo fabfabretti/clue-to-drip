@@ -41,6 +41,10 @@ function clueToObjectList(dataString) {
     //Equivalence between Clue and drip. bleeding value
     var bleedingValues={"light":1,"medium":2,"heavy":3}
 
+
+    //TBD
+    getAllValues(data)
+
     //Now for each unique clue date we want to generate one drip entry.
     entrydates.forEach(date => 
         {
@@ -53,14 +57,17 @@ function clueToObjectList(dataString) {
 
             var dripEntry = {}
 
-
             curr_entries.forEach(entry =>
                     {
                         switch(entry.type){
                             case "period":
                                 dripEntry.bleedingValue = bleedingValues[entry.value.option]
                                 dripEntry.bleedingExclude = false 
-                                break;                            
+                                break;   
+                            case "spotting":
+                                dripEntry.bleedingValue = 0
+                                dripEntry.bleedingExclude = false
+                                break;                   
                         }
                     }
                 
@@ -76,20 +83,6 @@ function clueToObjectList(dataString) {
         return dripEntries
 }
 
-
-function getAllValues(data){
-    console.log(Array.from(new Set(data.map(entry=>entry.type))))//type
-    console.log(Array.from(new Set(data.filter(entry=>entry.type === "pain")
-        .map(entry=>entry.value[0].option)))) //pain options
-    console.log(Array.from(new Set(data.filter(entry=>entry.type === "feelings")
-        .map(entry=>entry.value[0].option)))) //mood options
-    console.log(Array.from(new Set(data.filter(entry=>entry.type === "energy")
-        .map(entry=>entry.value[0].option)))) //energy options
-    console.log(Array.from(new Set(data.filter(entry=>entry.type === "tags")
-        .map(entry=>entry.value[0].option)))) //tags options
-}
-
-
 function writeToCSV(data){
 
     var csvContent = "date,temperature.value,temperature.exclude,temperature.time,temperature.note,bleeding.value,bleeding.exclude,mucus.feeling,mucus.texture,mucus.value,mucus.exclude,cervix.opening,cervix.firmness,cervix.position,cervix.exclude,note.value,desire.value,sex.solo,sex.partner,sex.condom,sex.pill,sex.iud,sex.patch,sex.ring,sex.implant,sex.diaphragm,sex.none,sex.other,sex.note,pain.cramps,pain.ovulationPain,pain.headache,pain.backache,pain.nausea,pain.tenderBreasts,pain.migraine,pain.other,pain.note,mood.happy,mood.sad,mood.stressed,mood.balanced,mood.fine,mood.anxious,mood.energetic,mood.fatigue,mood.angry,mood.other,mood.note"
@@ -98,7 +91,7 @@ function writeToCSV(data){
     //insert a test with all the entry to check they're all correct
     const data_complex = 
         {
-            date:"2024-01-17",
+            date:"2024-01-16",
             temperatureValue: 35.75, // : float with 4.2f precision
             temperatureExclude: false, // : boolean
             temperatureTime: "10:10",// : time value with hh:mm format
@@ -149,14 +142,7 @@ function writeToCSV(data){
             moodNote: "mood note",//freeform text
           }
 
-
-
-    const data_simple = {
-        date:"2024-01-17",
-        bleedingValue : 2,
-        bleedingExclude : false}
-
-
+    data.unshift(data_complex)
 
     data.forEach(entry => {
         csvContent+=("\n")
@@ -250,7 +236,7 @@ function writeToCSV(data){
 
 async function fetchTestData(convertFunction,writeFunction){
     //location of test file
-    var filePath = "./data/measurements.json"
+    var filePath = "./data/measurements_2.json"
 
     var data = null
 
@@ -273,7 +259,20 @@ async function fetchTestData(convertFunction,writeFunction){
     }
 }
 
+var data = await fetchTestData(clueToObjectList,writeToCSV)
 
+function getAllValues(data){
+    console.log(Array.from(new Set(data.map(entry=>entry.type))))//type
 
- var data = await fetchTestData(clueToObjectList,writeToCSV)
+    console.log(Array.from(new Set(data.filter(entry=>entry.type === "pain")
+        .map(entry=>entry.value[0].option)))) //pain options
 
+    console.log(Array.from(new Set(data.filter(entry=>entry.type === "feelings")
+        .map(entry=>entry.value[0].option)))) //mood options
+
+    console.log(Array.from(new Set(data.filter(entry=>entry.type === "energy")
+        .map(entry=>entry.value[0].option)))) //energy options
+
+    console.log(Array.from(new Set(data.filter(entry=>entry.type === "tags")
+        .map(entry=>entry.value[0].option)))) //tags options
+}
