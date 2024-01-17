@@ -29,4 +29,5 @@ button {
     overflow: auto;
     background-color: coral;
     white-space: pre-line;
+    text-align:left;
 }

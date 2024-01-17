@@ -9,7 +9,7 @@ function convertFile() {
 
         reader.onload = function (e) {
             // Perform your file conversion logic here
-            const convertedData = clueToObjectList(e.target.result);
+            const convertedData = clueToObjects(e.target.result);
 
             // Display the converted data
             outputElement.innerText = convertedData;
@@ -28,7 +28,7 @@ function convertFile() {
     }
 }
 
-function clueToObjectList(dataString) {
+function clueToObjects(dataString) {
     // drip. header columns and array of entries
     let dripEntries = []
 
@@ -67,7 +67,78 @@ function clueToObjectList(dataString) {
                             case "spotting":
                                 dripEntry.bleedingValue = 0
                                 dripEntry.bleedingExclude = false
-                                break;                   
+                                break;
+                            case "pain": 
+                                entry.value.forEach(item => {
+                                    switch(item.option){
+                                        case "period_cramps":
+                                            dripEntry.painCramps = true
+                                            break;
+                                        case "lower_back":
+                                            dripEntry.painBackache = true
+                                            break;
+                                        case "breast_tenderness":
+                                            dripEntry.painTenderBreasts = true
+                                            break;
+                                        case "headache":
+                                            dripEntry.painHeadache = true
+                                            break;
+                                        case "ovulation":
+                                            dripEntry.painOvulationPain = true
+                                            break;
+                                        case "migraine":
+                                        case "migraine_with_aura":
+                                            dripEntry.painMigraine = true
+                                            break;
+                                        case "pain_free":
+                                            break;                                
+                                        default:
+                                            dripEntry.painOther = true
+                                            dripEntry.painNote ? dripEntry.painNote += (" " + item.option) : dripEntry.painNote = item.option
+
+                                    }
+                                })
+                            break;
+                            case "feelings": 
+                                entry.value.forEach(item => {
+                                    switch(item.option){
+                                        default:
+                                            dripEntry.moodOther = true
+                                            dripEntry.moodNote ? dripEntry.moodNote += (" " + item.option) : dripEntry.moodNote = item.option
+                                            break;
+                                        case "sad":
+                                            dripEntry.moodSad = true
+                                            break
+                                        case "happy":
+                                            dripEntry.moodHappy = true
+                                            break
+                                        case "angry":
+                                            dripEntry.moodAngry = true
+                                            break
+                                        case "anxious":
+                                            dripEntry.moodAnxious = true
+                                            break
+                                    }
+                                })
+                            break;
+                            case "sex_life":
+                                entry.value.forEach(item => {
+                                    switch(item.option){
+                                        default:
+                                            dripEntry.sexPartner = true
+                                            dripEntry.sexOther = true
+                                            dripEntry.sexNote ? dripEntry.sexNote += (" " + item.option) : dripEntry.sexNote = item.option
+                                            break;
+                                        case "no_sex_today":
+                                        case "withdrawal":
+                                            dripEntry.sexNone = true;
+                                            break;
+                                        case "masturbation":
+                                            dripEntry.sexSolo = true;
+                                            break;
+                                    }
+                                })
+                            break;
                         }
                     }
                 
@@ -83,7 +154,7 @@ function clueToObjectList(dataString) {
         return dripEntries
 }
 
-function writeToCSV(data){
+function objectsToCSV(data){
 
     var csvContent = "date,temperature.value,temperature.exclude,temperature.time,temperature.note,bleeding.value,bleeding.exclude,mucus.feeling,mucus.texture,mucus.value,mucus.exclude,cervix.opening,cervix.firmness,cervix.position,cervix.exclude,note.value,desire.value,sex.solo,sex.partner,sex.condom,sex.pill,sex.iud,sex.patch,sex.ring,sex.implant,sex.diaphragm,sex.none,sex.other,sex.note,pain.cramps,pain.ovulationPain,pain.headache,pain.backache,pain.nausea,pain.tenderBreasts,pain.migraine,pain.other,pain.note,mood.happy,mood.sad,mood.stressed,mood.balanced,mood.fine,mood.anxious,mood.energetic,mood.fatigue,mood.angry,mood.other,mood.note"
 
@@ -142,7 +213,6 @@ function writeToCSV(data){
             moodNote: "mood note",//freeform text
           }
 
-    data.unshift(data_complex)
 
     data.forEach(entry => {
         csvContent+=("\n")
@@ -215,7 +285,6 @@ function writeToCSV(data){
     
     })
 
-    console.log(csvContent)
  
 
 
@@ -259,20 +328,37 @@ async function fetchTestData(convertFunction,writeFunction){
     }
 }
 
-var data = await fetchTestData(clueToObjectList,writeToCSV)
+var data = await fetchTestData(clueToObjects,objectsToCSV)
 
 function getAllValues(data){
-    console.log(Array.from(new Set(data.map(entry=>entry.type))))//type
+    
+    console.log("EVENT TYPES: " + Array.from(new Set(data.map(entry=>entry.type))))
+    
+    
+    const pain_array = 
+        Array.from(new Set(data
+            .filter(entry=>entry.type === "pain")
+            .flatMap(entry=>entry.value)
+            .map(value=>value.option)
+        ))
+    console.log("PAIN: " + pain_array)
 
-    console.log(Array.from(new Set(data.filter(entry=>entry.type === "pain")
-        .map(entry=>entry.value[0].option)))) //pain options
+    
+    const feelings_array = 
+        Array.from(new Set(data
+            .filter(entry=>entry.type === "feelings")
+            .flatMap(entry=>entry.value)
+            .map(value=>value.option)
+        ))
+    console.log("FEELINGS: " + feelings_array)
 
-    console.log(Array.from(new Set(data.filter(entry=>entry.type === "feelings")
-        .map(entry=>entry.value[0].option)))) //mood options
-
-    console.log(Array.from(new Set(data.filter(entry=>entry.type === "energy")
-        .map(entry=>entry.value[0].option)))) //energy options
-
-    console.log(Array.from(new Set(data.filter(entry=>entry.type === "tags")
-        .map(entry=>entry.value[0].option)))) //tags options
+    
+    const sex_life_array = 
+        Array.from(new Set(data
+            .filter(entry=>entry.type === "sex_life")
+            .flatMap(entry=>entry.value)
+            .map(value=>value.option)
+        ))
+    console.log("SEX: " + sex_life_array)
+    
 }

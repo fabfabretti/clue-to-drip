@@ -34,7 +34,7 @@
   "sex.ring": "",//boolean
   "sex.implant": "",//boolean
   "sex.diaphragm": "",//boolean
-  "sex.none": "",//boolean
+  "sex.none": "",//boolean ---
   "sex.other": "",//boolean
   "sex.note": "",//freeform text
   "pain.cramps": "",//boolean
@@ -46,15 +46,15 @@
   "pain.migraine": "",//boolean
   "pain.other": "",//boolean
   "pain.note": "",//freeform text
-  "mood.happy": "",//boolean
-  "mood.sad": "",//boolean
+  "mood.happy": "",//boolean-
+  "mood.sad": "",//boolean-
   "mood.stressed": "",//boolean
   "mood.balanced": "",//boolean
   "mood.fine": "",//boolean
-  "mood.anxious": "",//boolean
+  "mood.anxious": "",//boolean-
   "mood.energetic": "",//boolean
   "mood.fatigue": "",//boolean
-  "mood.angry": "",//boolean
+  "mood.angry": "",//boolean-
   "mood.other": "",//boolean
   "mood.note": "",//freeform text
 }
