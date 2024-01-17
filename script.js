@@ -91,7 +91,7 @@ function clueToObjects(dataString) {
                                             dripEntry.painMigraine = true
                                             break;
                                         case "pain_free":
-                                            break;                                
+                                            break;                         
                                         default:
                                             dripEntry.painOther = true
                                             dripEntry.painNote ? dripEntry.painNote += (" " + item.option) : dripEntry.painNote = item.option
@@ -118,6 +118,9 @@ function clueToObjects(dataString) {
                                         case "anxious":
                                             dripEntry.moodAnxious = true
                                             break
+                                        case "indifferent":
+                                            dripEntry.moodFine = true;
+                                            break;
                                     }
                                 })
                             break;
@@ -136,13 +139,95 @@ function clueToObjects(dataString) {
                                         case "masturbation":
                                             dripEntry.sexSolo = true;
                                             break;
+                                        case "high_sex_drive":
+                                            dripEntry.desireValue = 2;
+                                            break;
+                                        case "low_sex_drive":
+                                            dripEntry.desireValue = 0;
+                                            break;
                                     }
                                 })
                             break;
+                            case "energy":
+                                entry.value.forEach(item => {
+                                    switch(item.option){
+                                        default:
+                                            break;
+                                        case "energetic":
+                                        case "fully_energized":
+                                            dripEntry.moodEnergetic = true;
+                                            break;
+                                        case "exhausted":
+                                        case "tired":
+                                            dripEntry.moodFatigue = true;
+                                            break; // As there is no correspondent for energy, I'll only translate this one which is more explicit
+                                    }
+                                })
+                            break;
+                            case "pms":
+                                dripEntry.noteValue ? dripEntrynoteValue += (" pms") : dripEntry.noteValue = "pms"
+                                break;
+                            case "digestion":
+                                entry.value.forEach(item => {
+                                    switch(item.option){
+                                        default:
+                                            dripEntry.painOther = true;
+                                            dripEntry.painNote ? dripEntry.painNote += ("["+entry.type+": " + item.option+"]") : dripEntry.painNote = ("["+entry.type+": " + item.option+"]")       
+                                            break;
+                                        case "nauseous":
+                                            dripEntry.painNausea = true
+                                            break
+                                    }
+                                })
+                                break;
+                            case "discharge":
+                                entry.value.forEach(item => {
+                                    switch(item.option){
+                                        case "none": //none,sticky,creamy,egg_white,atypical
+                                            dripEntry.mucusTexture = 0
+                                            break;
+                                        case "sticky":
+                                        case "creamy":
+                                            dripEntry.mucusTexture = 1
+                                            break
+                                        case "egg_white":
+                                            dripEntry.mucusTexture = 2
+
+                                            //TODO: EXCLUSION CRITERION
+                                    }
+                                })
+                                break;
+                            case "bbt":
+                                dripEntry.temperatureExclude=entry.value.excluded
+                                dripEntry.temperatureValue=entry.value.celsius
+                                dripEntry.temperatureTime = "00:00"
+                                break;
+                            // tags not yet supported by drip: saves into freetext notes.
+                            // leaving explicit names rather than "default" to make future edits easier
+                            // leaving out all birth control tags for my own sanity (+ drip. doesn't support)
+                            case "collection_method":
+                            case "social_life":
+                            case "craving":
+                            case "mind":
+                            case "exercise":
+                            case "stool":
+                            case "leisure":
+                            case "hair":
+                            case "skin":
+                            case "medication":
+                            case "appointments":
+                            case "ailments":
+                                entry.value.forEach(item => {
+                                    dripEntry.noteValue ? dripEntry.noteValue += ("["+entry.type+": " + item.option+"]") : dripEntry.noteValue = ("["+entry.type+": " + item.option+"]")        
+                                })
+                                break;
+
+                            
+                            
                         }
                     }
                 
-                )
+                ) 
 
             // We only save the generated entry if it has at least 1 field supported by drip.
             if(!(Object.keys(dripEntry).length === 0)){
@@ -332,33 +417,16 @@ var data = await fetchTestData(clueToObjects,objectsToCSV)
 
 function getAllValues(data){
     
-    console.log("EVENT TYPES: " + Array.from(new Set(data.map(entry=>entry.type))))
-    
-    
-    const pain_array = 
-        Array.from(new Set(data
-            .filter(entry=>entry.type === "pain")
-            .flatMap(entry=>entry.value)
-            .map(value=>value.option)
-        ))
-    console.log("PAIN: " + pain_array)
+    var types = Array.from(new Set(data.map(entry=>entry.type)))
+    console.log(types)
 
-    
-    const feelings_array = 
-        Array.from(new Set(data
-            .filter(entry=>entry.type === "feelings")
+    types.forEach(type => {
+        console.log(type.toUpperCase() +":\n" + Array.from(new Set(data
+            .filter(entry=>entry.type === type)
             .flatMap(entry=>entry.value)
             .map(value=>value.option)
-        ))
-    console.log("FEELINGS: " + feelings_array)
-
+        )) )
+    })
     
-    const sex_life_array = 
-        Array.from(new Set(data
-            .filter(entry=>entry.type === "sex_life")
-            .flatMap(entry=>entry.value)
-            .map(value=>value.option)
-        ))
-    console.log("SEX: " + sex_life_array)
     
 }
