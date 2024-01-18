@@ -68,4 +68,4 @@ In the table below I explain the conversion I used between the two system.
 * A decent UI is on its way, I promise
 * Excluded cycle data
 * Checks on input file
-* Birth-control related tags (currently, all tags except custon tags and these ones are already supported)
+* Birth-control related tags, maybe - as they have no equivalent in drip. it looks like a lot of (useless?) data to put in notes.
