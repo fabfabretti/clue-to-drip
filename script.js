@@ -363,16 +363,9 @@ async function fetchTestData(convertFunction,writeFunction){
  * Takes a string with everything done and formatted.. and creates a downloadable .csv file out of it.
  * @param {*} csvContent 
  */
-function createCSV(csvContent){
-    
-    const dataUri = "data:text/csv;charset=utf8,"+ encodeURIComponent(csvContent)
-
-    const link = document.createElement("a")
-    link.setAttribute("href",dataUri)
-    link.setAttribute("download","tf.csv")
-    document.body.appendChild(link)
-    
-    document.getElementById('downloadButton').addEventListener('click', () => {
+function downloadCSV(csvContent){
+   
+    document.getElementById('fileOutput').addEventListener('click', () => {
         link.click();
     });
 }
@@ -398,11 +391,10 @@ function getAllValues(data){
     
 }
 
-var csvContent = "Waiting for file..."
 
+// -- Read file from computer
 const fileInput = document.getElementById('fileInput');
-
-// Read file from computer
+var csvContent = ""
 const reader = new FileReader();
 reader.onload = function(e) {
     console.log("a file was loaded");
@@ -412,11 +404,24 @@ reader.onload = function(e) {
     csvContent = objectsToCSV(objects)
     document.getElementById("output").innerHTML=csvContent
 }
-
 fileInput.onchange = () => {
   const selectedFile = fileInput.files[0];
   reader.readAsText(selectedFile)
 }
 
+// -- Create and download .csv file
+const fileOutput = document.getElementById('fileOutput');
+fileOutput.onclick = () => {
+    if(csvContent === ""){
+        alert("You need to upload a file first!")
+    }
+    else {
+        const dataUri = "data:text/csv;charset=utf8,"+ encodeURIComponent(csvContent)  
+        const link = document.createElement("a")
+        link.setAttribute("href",dataUri)
+        link.setAttribute("download","clueToDrip.csv")
+        document.body.appendChild(link)
+        link.click()
+    }
+}
 
-//SHOW RESULT
