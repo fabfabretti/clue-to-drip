@@ -1,34 +1,3 @@
-function convertFile() {
-    const fileInput = document.getElementById('fileInput');
-    const outputElement = document.getElementById('output');
-
-    const file = fileInput.files[0];
-
-    if (file) {
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-            // Perform your file conversion logic here
-            const convertedData = clueToObjects(e.target.result);
-
-            // Display the converted data
-            outputElement.innerText = convertedData;
-        };
-
-        // Read the file as text
-        reader.readAsText(file);
-    } else {
-        outputElement.innerText = 'Please choose a file';
-
-
-
-
-
-
-    }
-}
-
-
 /**
  * Converts Clue's JSON structure to a list of objects.
  *
@@ -49,9 +18,6 @@ function clueToObjects(dataString) {
     var bleedingValues={"light":1,"medium":2,"heavy":3}
 
 
-    //TBD
-    getAllValues(data)
-
     //Now for each unique clue date we want to generate one drip entry.
     entrydates.forEach(date => 
         {
@@ -59,10 +25,11 @@ function clueToObjects(dataString) {
             var curr_entries = data.filter(entry => entry.date === date)
 
 
-            // BELOW IS THE CORE OF THE PROGRAM. THIS IS THE CONVERSION
-            // FROM CLUE TO OBJECT IN MEMORY.
+            // BELOW IS THE hellish core OF THE PROGRAM. THIS IS THE CONVERSION
+            // FROM CLUE TO OBJECT IN MEMORY. Objects in memory reflect drip.'s CSV structure, 
+            // using the date as primary key, as opposed to Clue's dynamic structure and use of hashes as primary key.
 
-            var dripEntry = {}
+            var dripEntry = {} // This is our "line". If this was typescript I'd have defined a good ol' type for it but nah
 
             curr_entries.forEach(entry =>
                     {
@@ -358,6 +325,14 @@ function objectsToCSV(data){
 
 }
 
+/**
+ * TEST STUFF
+ * Takes the entries as an array of objects, and returns a string with everything put down in the correct order and CSV format.
+ *
+ * @param   convertFunction is the callback function to be called in order to load the Clue JSON as an array of objects in drip.'s format.
+ * @param   writeFunction is the callback function to be called in order to generate the CSV file from the list of objects 
+ * @returns a string with the resulting CSV content, ready to be written on file.
+ */
 async function fetchTestData(convertFunction,writeFunction){
     //location of test file
     var filePath = "./data/measurements_2.json"
@@ -384,23 +359,29 @@ async function fetchTestData(convertFunction,writeFunction){
     }
 }
 
-var csvContent = await fetchTestData(clueToObjects,objectsToCSV)
+/**
+ * Takes a string with everything done and formatted.. and creates a downloadable .csv file out of it.
+ * @param {*} csvContent 
+ */
+function createCSV(csvContent){
+    
+    const dataUri = "data:text/csv;charset=utf8,"+ encodeURIComponent(csvContent)
 
+    const link = document.createElement("a")
+    link.setAttribute("href",dataUri)
+    link.setAttribute("download","tf.csv")
+    document.body.appendChild(link)
+    
+    document.getElementById('downloadButton').addEventListener('click', () => {
+        link.click();
+    });
+}
 
-const dataUri = "data:text/csv;charset=utf8,"+ encodeURIComponent(csvContent)
-
-const link = document.createElement("a")
-link.setAttribute("href",dataUri)
-link.setAttribute("download","tf.csv")
-document.body.appendChild(link)
-
-document.getElementById('downloadButton').addEventListener('click', () => {
-    link.click();
-});
-
-document.getElementById("output").innerHTML=csvContent
-
-
+/**
+ * TEST STUFF
+ *  Takes the object list and prints sets with every event and, for each event, every tag of said event.
+ * @param {*} data is the array of object as per clueToObject function.
+ */
 function getAllValues(data){
     
     var types = Array.from(new Set(data.map(entry=>entry.type)))
@@ -416,3 +397,26 @@ function getAllValues(data){
     
     
 }
+
+var csvContent = "Waiting for file..."
+
+const fileInput = document.getElementById('fileInput');
+
+// Read file from computer
+const reader = new FileReader();
+reader.onload = function(e) {
+    console.log("a file was loaded");
+    let rawfile = reader.result
+    let objects = clueToObjects(rawfile)
+    console.log("file was converted to object")
+    csvContent = objectsToCSV(objects)
+    document.getElementById("output").innerHTML=csvContent
+}
+
+fileInput.onchange = () => {
+  const selectedFile = fileInput.files[0];
+  reader.readAsText(selectedFile)
+}
+
+
+//SHOW RESULT
