@@ -1,4 +1,5 @@
-# 🩸 clue-to-drip. 🩸 (menstruator migrator)
+![clue to drip.](cover.png)
+
 A simple tool that allows you to smoothly import all of your data from [Clue](https://helloclue.com/) into [drip.](https://bloodyhealth.gitlab.io/index.html). <br>Supports all types of bleeding data and most tags!
 <br><br> While not finished yet, the core functionality is already available at [https://fabfabretti.github.io/clue-to-drip/](https://fabfabretti.github.io/clue-to-drip/). :)
 
