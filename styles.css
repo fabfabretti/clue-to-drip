@@ -16,7 +16,7 @@ body {
 .bgcolor{
     width:100%;
     font-weight: bold;
-    font-size:x-large;
+    font-size: larger;
     background-color: #3a2671;
     display: flex;
     flex-direction: column;
@@ -25,6 +25,7 @@ body {
 }
 
 header {
+    width:80%;
     background-color: #3a2671;
     color: #eaf2ee;
     text-align: center;
@@ -47,6 +48,7 @@ header {
     }
 }
 .instructionDiv{
+    width:65%;
     color:#676767;
     > h2 {
         color:#3a2671
