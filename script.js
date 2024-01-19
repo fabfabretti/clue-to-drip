@@ -62,6 +62,7 @@ function clueToObjects(dataString) {
                                             break;
                                         case "migraine":
                                         case "migraine_with_aura":
+                                            dripEntry.painNote ? dripEntry.painNote += (" " + item.option) : dripEntry.painNote = item.option
                                             dripEntry.painMigraine = true
                                             break;
                                         case "pain_free":
@@ -126,7 +127,7 @@ function clueToObjects(dataString) {
                                 entry.value.forEach(item => {
                                     switch(item.option){
                                         default:
-                                            break;
+                                            break; //TODO
                                         case "energetic":
                                         case "fully_energized":
                                             dripEntry.moodEnergetic = true;

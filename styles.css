@@ -1,33 +1,108 @@
+@import url(https://fonts.googleapis.com/css?family=Jost);
+
+
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+    font-family: "Jost",sans-serif;
+    background-color: #eaf2ee;
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    line-height: 1.5;
+    letter-spacing:.1rem;
 }
 
-.container {
-    text-align: center;
+.bgcolor{
+    width:100%;
+    font-weight: bold;
+    font-size:x-large;
+    background-color: #3a2671;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
 }
+
+header {
+    background-color: #3a2671;
+    color: #eaf2ee;
+    text-align: center;
+    padding: 20px;
+    padding-top: 60px;
+}
+
+
+.converterDiv {
+    display:flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 10px;
+    width: 100px;
+    align-items: center;
+
+    > * {
+        color:#eaf2ee;
+        margin:5px;
+    }
+}
+.instructionDiv{
+    color:#676767;
+    > h2 {
+        color:#3a2671
+    }
+}
+
+small{
+    color:#f38337;
+    display:none;
+}
+
+.fileUpload{
+  position:relative;
+  background-color:var(--grey);
+  padding:30px;
+  border-radius:1em;
+  border:2px dashed orange;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  display:flex;
+  text-align:center;
+  font-size:20px;
+  font-weight:500
+}
+
 
 input {
+    padding: 10px;
     margin-right: 10px;
+    border: 1px solid #676767;
+    border-radius: 5px;
 }
 
 button {
-    padding: 10px;
+    font-family: "Jost";
+    font-size: large;
+    padding: 10px 20px;
     cursor: pointer;
+    background-color: #f38337;
+    color: #eaf2ee;
+    border: none;
+    border-radius: 30px;
 }
 
-
 #output {
-    width: 600px;
+    width: 100%;
+    max-width: 600px;
     height: 300px;
     padding: 10px;
     overflow: auto;
-    background-color: coral;
-    white-space: pre-line;
-    text-align:left;
+    background-color: #fff;
+}
+
+em,a {
+    color:#69cbc1;
+    font-weight: bolder;
+    font-style: normal;
 }

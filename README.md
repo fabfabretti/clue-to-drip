@@ -63,7 +63,10 @@ In the table below I explain the conversion I used between the two system.
 ## Upcoming
 > [!NOTE]  
 > While the tool is functional, testing was very limited because of the difficulty in getting my hands on Clue data. If you want to help, I'd be more than happy to get some more data to test on!
-* A decent UI is on its way, I promise
+* ~A decent UI is on its way, I promise~ done!
 * Excluded cycle data
 * Checks on input file
 * Birth-control related tags (currently, all tags except custon tags and these ones are already supported)
+
+## Credits
+Both Clue and drip. are owned by their respective owners. UI design is shamelessly inspired by drip.'s official site and [flo-to-drip](https://github.com/fabfabretti/clue-to-drip).

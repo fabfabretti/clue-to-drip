@@ -5,19 +5,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menstruator migrator (ClueToDrip)</title>
+    <title>menstruator migrator</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
 
 <body>
 
-    <div class="container">
-        <input type="file" id="fileInput" accept=".json">
-        <button id="fileOutput">Download</button>
-        <p id="output">Waiting for file...</p>
+    <div class="bgcolor">
+    <header>
+        
+        <h1>🩸 Clue to drip. converter 🩸</h1>
+        <p>
+            Welcome!<br> This tool will automatically convert your data from Clue to drip.
+        </p>
+    </header>
+
+    <div class="converterDiv">
+        <div class="fileUpload">
+            <input type="file" id="fileInput" accept=".json">
+        </div>
+            <button id="fileOutput">Download</button>
+        <small>Error :(</small>
     </div>
 
+    <!--<div>
+        <p>Preview:</p>
+        <p id="output"></p>
+    </div>-->
+
+    
+    </div>
+
+    <div class="instructionDiv">
+        <h2>What tags are supported?</h2>
+        <div>More or less all of the tags are supported except birth-control related tags and custom tags. You can find more info on how I convert tags from Clue to drip. <a href=https://github.com/fabfabretti/clue-to-drip>here</a>.</div>
+        <h2>How do I download my data from Clue?</h2>
+        <div>Sadly, Clue doesn't allow automatic export of your data. However, you can still get it by <em>requesting a takeout</em> of your data:
+            <ul>
+                <li>
+                    From the email you registered to Clue with, write an email to <a href="mailto:trust@clue.com?subject=Data%20download%20request">
+                        trust@clue.com</a>
+                     and ask them to send you your data. For me, it usually took ~24h.
+                </li> 
+                <li>
+                    You'll get two emails, one with the data in a zip file and the other with a password. Extract the zip file and insert the password when required.
+                </li>
+                <li>
+                    Upload the measurement.json you extracted in the zip in this page.
+                </li>
+                <li>
+                    Download the resulting .csv and import it into drip. <em> Welcome to FOSS!🥰🥳</em>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>fabfabretti, 2024</p>
+    </footer>
 
     <script type="module" src="script.js"></script>
 
