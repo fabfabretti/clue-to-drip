@@ -1,12 +1,14 @@
-# 🩸 clue-to-drip 🩸 (menstruator migrator)
+# 🩸 clue-to-drip. 🩸 (menstruator migrator)
 A simple tool that allows you to smoothly import all of your data from [Clue](https://helloclue.com/) into [drip.](https://bloodyhealth.gitlab.io/index.html). <br>Supports all types of bleeding data and most tags!
 <br><br> While not finished yet, the core functionality is already available at [https://fabfabretti.github.io/clue-to-drip/](https://fabfabretti.github.io/clue-to-drip/). :)
 
-## Current tag equivalence
-As not all tags available in Clue are also available in drip., the extra data is stored in the note.value column. 
+## Current tag conversion rules
+As not all tags available in Clue are also available in drip., the extra data is stored in the note.value or [category].note column
 In the table below I explain the conversion I used between the two system. 
 * The icon 📄 means that the tag is (also) written in the generic note.value column.
-* The icon 🔎 means that the tag is (also) written in the specific value column, such as pain.Note for the pain category
+* The icon 🔎 means that the tag is (also) written in the specific value column. For example, the pain category will have pain.other = true and pain.note with the value.
+
+<br>
 
 | Clue   |      drip.      |
 |----------|-------------|
@@ -18,15 +20,15 @@ In the table below I explain the conversion I used between the two system.
 |pain/headache|pain.headache|
 |pain/ovulation|pain.ovulationPain|
 |pain/migraine|pain.migraine|
-|pain/migraine_with_aura|pain.migraine + 🔎 pain.other,pain.value|
+|pain/migraine_with_aura|pain.migraine + 🔎pain🔎|
 |pain/pain_free| discarded|
-|pain/*|🔎pain.other,pain.note
+|pain/*|🔎pain🔎|
 |feelings/sad|mood.sad|
 |feelings/happy|mood.happy|
 |feelings/angry|mood.angry|
 |feelings/anxious|mood.anxious|
 |feelings/indifferent|mood.fine|
-|feelings/*|🔎mood.other,mood.note|
+|feelings/*|🔎mood🔎|
 |sex_life/no_sex_today|sex.none|
 |sex_life/withdrawal|sex.none|
 |sex_life/masturbation|sex.solo|
@@ -38,7 +40,7 @@ In the table below I explain the conversion I used between the two system.
 |energy/exhausted|mood.fatigue|
 |pms|📄|
 |digestion/nauseous|pain.nausea|
-|digestion/*|🔎pain.other,pain.note|
+|digestion/*|🔎pain🔎|
 |discharge/none|mucus.texture = 0|
 |discharge/sticky|mucus.texture = 1|
 |discharge/creamy|mucus.texture = 1|
