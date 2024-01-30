@@ -72,4 +72,4 @@ In the table below I explain the conversion I used between the two system.
 * Birth-control related tags (currently, all tags except custon tags and these ones are already supported)
 
 ## Credits
-Both Clue and drip. are owned by their respective owners. UI design is shamelessly inspired by drip.'s official site and [flo-to-drip](https://github.com/fabfabretti/clue-to-drip).
+Both Clue and drip. are owned by their respective owners. UI design is shamelessly inspired by drip.'s official site and [flo-to-drip](https://github.com/SaraVieira/flo-to-drip).
