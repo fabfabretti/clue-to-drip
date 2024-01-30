@@ -61,6 +61,8 @@ In the table below I explain the conversion I used between the two system.
 |ailments/*|📄|
 
 
+## Changelog
+* 2024.01.30 Fixed Clue email, and changed conversion logic so that spotting is not counted as a period.
 
 
 ## Upcoming
@@ -70,6 +72,7 @@ In the table below I explain the conversion I used between the two system.
 * Excluded cycle data
 * Checks on input file
 * Birth-control related tags (currently, all tags except custon tags and these ones are already supported)
+
 
 ## Credits
 Both Clue and drip. are owned by their respective owners. UI design is shamelessly inspired by drip.'s official site and [flo-to-drip](https://github.com/SaraVieira/flo-to-drip).
