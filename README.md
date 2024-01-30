@@ -14,7 +14,7 @@ In the table below I explain the conversion I used between the two system.
 | Clue   |      drip.      |
 |----------|-------------|
 | period|   bleeding.value = [1:3], bleeding.exclude = false          |
-| spotting|bleeding.value = 0, bleeding.exclude = false|
+| spotting|bleeding.value = 0, bleeding.exclude = true|
 |pain/period_cramps|pain.cramps|
 |pain/lower_back|pain.backache|
 |pain/breast_tenderness|pain.tenderBreasts|
