@@ -40,7 +40,7 @@ function clueToObjects(dataString) {
                                 break;   
                             case "spotting":
                                 dripEntry.bleedingValue = 0
-                                dripEntry.bleedingExclude = false
+                                dripEntry.bleedingExclude = true
                                 break;
                             case "pain": 
                                 entry.value.forEach(item => {
