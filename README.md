@@ -13,7 +13,10 @@ In the table below I explain the conversion I used between the two system.
 
 | Clue   |      drip.      |
 |----------|-------------|
-| period|   bleeding.value = [1:3], bleeding.exclude = false          |
+| period/light|   bleeding.value = 1, bleeding.exclude = false          |
+| period/medium|   bleeding.value = 2, bleeding.exclude = false          |
+| period/heavy|   bleeding.value = 3, bleeding.exclude = false          |
+| period/very_heavy|   bleeding.value = 3, bleeding.exclude = false          |
 | spotting|bleeding.value = 0, bleeding.exclude = true|
 |pain/period_cramps|pain.cramps|
 |pain/lower_back|pain.backache|
@@ -62,6 +65,7 @@ In the table below I explain the conversion I used between the two system.
 
 
 ## Changelog
+* 2024.01.09 Fixed missing conversion for "period/very_heavy" tag.
 * 2024.01.30 Fixed Clue email, and changed conversion logic so that spotting is not counted as a period.
 
 

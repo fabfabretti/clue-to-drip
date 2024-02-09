@@ -15,7 +15,7 @@ function clueToObjects(dataString) {
     var entrydates = Array.from(new Set(data.map(entry => entry.date)))
 
     //Equivalence between Clue and drip. bleeding value
-    var bleedingValues={"light":1,"medium":2,"heavy":3}
+    var bleedingValues={"light":1,"medium":2,"heavy":3,"very_heavy":3}
 
 
     //Now for each unique clue date we want to generate one drip entry.
