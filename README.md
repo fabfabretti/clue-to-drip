@@ -7,7 +7,8 @@ A simple tool that allows you to smoothly import all of your data from [Clue](ht
 Everything is done inside your browser, there is no server at all. I used Github's GitHub Pages feature to host the site, so it's all just a static page running a script that converts the file and lets you download it. :)
 
 If you want to be *really* picky, GitHub Pages does store your IP address when visiting. From the doc:
-    When a GitHub Pages site is visited, the visitor's IP address is logged and stored for security purposes, regardless of whether the visitor has signed into GitHub or not.
+> When a GitHub Pages site is visited, the visitor's IP address is logged and stored for security purposes, regardless of whether the visitor has signed into GitHub or not.
+
 However, the file conversion is completely local. Hence, your sensitive data is not uploaded (nor saved) anywhere 👌
 
 If you would still prefer to run the whole project locally to avoid logging your IP, I suggest opening the project in VS Code and using the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension to run the project offline.
