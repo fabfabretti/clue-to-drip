@@ -140,7 +140,7 @@ function clueToObjects(dataString) {
                                 })
                             break;
                             case "pms":
-                                dripEntry.noteValue ? dripEntrynoteValue += (" pms") : dripEntry.noteValue = "pms"
+                                dripEntry.noteValue ? dripEntry.noteValue += (" pms") : dripEntry.noteValue = "pms"
                                 break;
                             case "digestion":
                                 entry.value.forEach(item => {
